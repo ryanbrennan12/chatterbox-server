@@ -19,7 +19,7 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 
-var messages = [];
+var messages = [{roomname: 'lobby', username: 'OptimusPrime', text: 'I am some dummy text'}];
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -54,6 +54,9 @@ var requestHandler = function(request, response) {
       // console.log('type of body', typeof body);
       messages.push(JSON.parse(body));
     });
+  } else if (request.method === 'OPTIONS') {
+    statusCode = 200;
+
   } else {
     statusCode = 404;
   }
@@ -65,7 +68,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'text/plain';
+  headers['Content-Type'] = 'application/json';
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
@@ -78,6 +81,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
+  console.log(JSON.stringify(resObj));
   response.end(JSON.stringify(resObj));
 };
 
