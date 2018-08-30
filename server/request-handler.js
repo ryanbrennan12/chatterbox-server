@@ -18,8 +18,8 @@ var defaultCorsHeaders = {
   'access-control-allow-headers': 'content-type, accept',
   'access-control-max-age': 10 // Seconds.
 };
-
-var messages = [{roomname: 'lobby', username: 'OptimusPrime', text: 'I am some dummy text'}];
+var id = 2;
+var messages = [{roomname: 'lobby', username: 'OptimusPrime', text: 'I am some dummy text', objectId: 1}];
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -52,10 +52,16 @@ var requestHandler = function(request, response) {
     request.on('end', () => {
       // console.log('this is body', body);
       // console.log('type of body', typeof body);
-      messages.push(JSON.parse(body));
+      body = JSON.parse(body);
+      
+      body.objectId = id;
+      id += 1;
+      messages.push(body);
+      
     });
   } else if (request.method === 'OPTIONS') {
     statusCode = 200;
+
 
   } else {
     statusCode = 404;
@@ -81,7 +87,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  console.log(JSON.stringify(resObj));
+  
   response.end(JSON.stringify(resObj));
 };
 

@@ -116,4 +116,32 @@ describe('Node Server Request Listener Function', function() {
       });
   });
 
+  it('Should accept OPTIONS requests', function() {
+    var req = new stubs.request('/classes/messages', 'OPTIONS');
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    expect(res._ended).to.equal(true);
+
+  });
+
+  it('Should return message with a unique id', function() {
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+
+
+    handler.requestHandler(req, res);
+    // console.log(res, 'This is RESPONSE');
+    var reqParsed = JSON.parse(res._data);
+    console.log('THIS ONE!!!!', reqParsed.results[0].objectId);
+    
+  });
+
 });
