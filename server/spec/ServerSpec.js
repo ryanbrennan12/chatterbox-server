@@ -135,13 +135,31 @@ describe('Node Server Request Listener Function', function() {
 
     var req = new stubs.request('/classes/messages', 'POST', stubMsg);
     var res = new stubs.response();
-
-
     handler.requestHandler(req, res);
-    // console.log(res, 'This is RESPONSE');
     var reqParsed = JSON.parse(res._data);
-    console.log('THIS ONE!!!!', reqParsed.results[0].objectId);
+    var storedID = reqParsed.results[reqParsed.results.length - 1].objectId;
+
+
+    var req2 = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res2 = new stubs.response();
+    handler.requestHandler(req2, res2);
+    var reqParsed2 = JSON.parse(res2._data);
+    var newID = reqParsed2.results[reqParsed2.results.length - 1].objectId;
+    expect(storedID).to.not.equal(newID);
     
   });
 
+  it('Should have headers in the reponse', function() {
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+    handler.requestHandler(req, res);
+    var reqParsed = res._headers;
+    expect(reqParsed).to.exist;
+  });
+
 });
+
