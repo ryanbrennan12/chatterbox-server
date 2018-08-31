@@ -85,5 +85,25 @@ describe('server', function() {
     });
   });
 
+  it('Should return message with unique ID ', function(done) {
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        text: 'Do my bidding!'}
+    };
+
+    request(requestParams, function(error, response, body1) {
+  
+      var oldId = body1.results[body1.results.length - 1].objectId;
+      request(requestParams, function(error, response, body2) {
+  
+        var newId = body2.results[body2.results.length - 1].objectId;
+        expect(oldId).to.not.equal(newId);
+        done();
+      });
+    });
+  });
+
   
 });

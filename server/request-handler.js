@@ -19,7 +19,9 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 var id = 2;
-var messages = [{roomname: 'lobby', username: 'OptimusPrime', text: 'I am some dummy text', objectId: 1}];
+var messages = [
+  // {roomname: 'lobby', username: 'OptimusPrime', text: 'I am some dummy text', objectId: 1}
+];
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
