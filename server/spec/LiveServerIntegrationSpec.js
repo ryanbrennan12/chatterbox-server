@@ -73,6 +73,17 @@ describe('server', function() {
     });
   });
 
+  it('should handle OPTIONS requests', function(done) {
+    var requestParams = {method: 'OPTIONS',
+      uri: 'http://127.0.0.1:3000/classes/messages'
+    };
 
+    request(requestParams, function(error, response, body) {
+      // Now if we request the log, that message we posted should be there:
+      expect(response.statusCode).to.equal(200);
+      done();
+    });
+  });
+
+  
 });
-
